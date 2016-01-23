@@ -1,7 +1,13 @@
-from app import app
+import os
+from app import create_app
 from flask.ext.script import Manager
 from flask.ext.script import Shell
 from flask.ext.script import Server
+from config import app_config
+
+config_object=app_config.get(os.environ.get('FLASK_CONIFG','default'))
+
+app=create_app(config_object)
 
 manager=Manager(app)
 
@@ -10,7 +16,6 @@ def make_shell():
 
 manager.add_command('shell',Shell(make_context=make_shell))
 manager.add_command('runserver',Server(
-	use_debugger=True,
 	use_reloader=True,
 	host='localhost',
 	port=5000

@@ -1,35 +1,32 @@
-bootstrap_app='bootstrap'
+import os
+import base64
 
-folders=[
-	'app/',
-	'app/main/',
-	'app/auth/',
-	'app/static/css/',
-	'app/static/css/auth/',
-	'app/static/css/main/',
-	'app/static/images/',
-	'app/static/js/',
-	'app/static/js/auth/',
-	'app/static/js/auth/app/',
-	'app/static/js/main/',
-	'app/static/js/main/app/',
-	'app/static/js/ext/',
-	'app/templates/',
-	'app/templates/auth/',
-	'app/templates/main/',
-	'tests/'	
-]
+class Config(object):
 
-files=[
-	'manage.py',
-	'config.py',
-	'requirements.txt',
-	'app/__init__.py',
-	'app/models.py',
-	'app/main/__init__.py',
-	'app/main/views.py',
-	'app/auth/__init__.py',
-	'app/auth/views.py',
-	'app/templates/auth/index.html',
-	'app/templates/main/index.html'
-]
+	#secret key for csrf purpose and etc.,
+	SECRET_KEY = os.environ.get('SECRET_KEY') or base64.b64encode(os.urandom(20))
+
+	#default debug setting
+	DEBUG=True
+	TESTING=False
+
+class DevelopmentConfig(Config):
+	#switching off test config
+	TESTING=False
+
+class TestingConfig(Config):
+	#switching to test config
+	TESTING=True
+	
+class ProductionConfig(Config):
+	#swtiching off debug and testing
+	DEBUG=False
+	TESTING=False
+
+#configuration factor object
+app_config={
+	'development':DevelopmentConfig,
+	'testing':TestingConfig,
+	'production':ProductionConfig,
+	'default':DevelopmentConfig,
+}
