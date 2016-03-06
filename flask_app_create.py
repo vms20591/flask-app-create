@@ -27,10 +27,10 @@ def create_folders(folders):
 			except OSError,e:
 				print 'Error creating folder '+app_name+'/'+folder
 				
-				raise Exception
+				raise e
 		
 	except Exception,e:
-		print e
+                print e
 		sys.exit(1)
 		
 def create_files(files):
@@ -43,7 +43,7 @@ def create_files(files):
 
 		for filename in files:
 			try:
-				source_file=os.path.join(os.path.dirname(__file__),bootstrap_app+'/'+filename)
+				source_file=os.path.join(os.path.dirname(os.path.realpath(__file__)),bootstrap_app+'/'+filename)
 				dest_file=os.path.join(os.getcwd(),app_name+'/'+filename)
 			
 				print 'Creating file {0} in folder {1} '.format(os.path.split(dest_file)[1],os.path.split(dest_file)[0])
@@ -52,7 +52,7 @@ def create_files(files):
 			except Exception,e:
 				print 'Error creating file {0} in folder {1} '.format(os.path.split(dest_file)[1],os.path.split(dest_file)[0])
 			
-				raise Exception
+				raise e
 	except Exception,e:
 		print e
 		sys.exit(1)
